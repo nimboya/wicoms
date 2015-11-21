@@ -1,3 +1,4 @@
+<?php /* Property of Wicee Technologies */ ?>
 <?php require_once('../Connections/wistream.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
