@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_rsItems" value="name:id;datatype:int,name:title;datatype:blob,name:details;datatype:blob,name:description;datatype:blob,name:dnt;datatype:blob,name:category;datatype:blob,name:views;datatype:int,name:photo;datatype:blob,name:phototwo;datatype:blob,name:photothree;datatype:blob,name:shorturl;datatype:blob,name:uname;datatype:blob" />
+</info>

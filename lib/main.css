@@ -1,0 +1,48 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	margin-top: 0px;
+}
+
+a.minilink {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color: #09F;
+	font-weight: bold;
+}
+a.minilink:link {
+	text-decoration: none;
+}
+a.minilink:visited {
+	text-decoration: none;
+	color: #666;
+}
+a.minilink:hover {
+	text-decoration: underline;
+	color: #F00;
+}
+a.minilink:active {
+	text-decoration: none;
+	color: #000;
+}
+
+.newstitle
+{
+	font-size:17px;
+	font-weight:100;
+	color:#000;
+}
+.newscontent
+{
+	font-size:13px;
+	font-family:Arial;
+	color:#000;
+	margin-left:3;
+}
+.headertitle
+{
+	font-size:18px;
+	font:Arial;
+	font-weight:bold;
+}
