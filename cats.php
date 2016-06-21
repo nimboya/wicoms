@@ -1,4 +1,4 @@
-<?php require_once('../Connections/wistream.php'); ?>
+<?php require_once('Connections/wistream.php'); ?>
 <?php
 
 //initialize the session
@@ -156,7 +156,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 
 
 
-  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+  $theValue = strip_tags($theValue);
 
 
 
@@ -228,15 +228,15 @@ if (isset($_GET['c'])) {
 
 }
 
-mysql_select_db($database_wistream, $wistream);
+mysqli_select_db($wistream,$database_wistream);
 
 $query_rsNews = sprintf("SELECT * FROM content WHERE category = %s ORDER BY id DESC", GetSQLValueString($colname_rsNews, "text"));
 
 $query_limit_rsNews = sprintf("%s LIMIT %d, %d", $query_rsNews, $startRow_rsNews, $maxRows_rsNews);
 
-$rsNews = mysql_query($query_limit_rsNews, $wistream) or die(mysql_error());
+$rsNews = mysqli_query($wistream,$query_limit_rsNews) or die(mysql_error());
 
-$row_rsNews = mysql_fetch_assoc($rsNews);
+$row_rsNews = mysqli_fetch_assoc($rsNews);
 
 
 
@@ -246,9 +246,9 @@ if (isset($_GET['totalRows_rsNews'])) {
 
 } else {
 
-  $all_rsNews = mysql_query($query_rsNews);
+  $all_rsNews = mysqli_query($wistream,$query_rsNews);
 
-  $totalRows_rsNews = mysql_num_rows($all_rsNews);
+  $totalRows_rsNews = mysqli_num_rows($all_rsNews);
 
 }
 
@@ -312,7 +312,7 @@ header("Location: cats.php?c=" . $_GET['c'] . "&status=deleted");
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title>Wistream CMS</title>
+<title>Telemobi</title>
 
 <style type="text/css">
 
@@ -334,7 +334,7 @@ body {
 
   <tr>
 
-    <td align="center" bgcolor="#FFFFFF"><img src="images/wicee.jpg" alt="" width="127" height="109" align="middle" /></td>
+    <td align="center" bgcolor="#000"><img src="images/logo.png" alt="" align="middle" /></td>
 
   </tr>
 
@@ -410,7 +410,7 @@ body {
 
           </table>
 
-          <?php } while ($row_rsNews = mysql_fetch_assoc($rsNews)); ?>
+          <?php } while ($row_rsNews = mysqli_fetch_assoc($rsNews)); ?>
 
         <?php } // Show if recordset not empty ?>
 
@@ -440,7 +440,7 @@ body {
 
   <tr>
 
-    <td height="24" colspan="2" align="center" bgcolor="#FFD9B3">powered by <a href="http://wiceeweb.com/" target="_blank">Wicee</a></td>
+    <td height="24" colspan="2" align="center" bgcolor="#FFD9B3"></td>
 
   </tr>
 
@@ -452,7 +452,7 @@ body {
 
 <?php
 
-mysql_free_result($rsNews);
+mysqli_free_result($rsNews);
 
 ?>
 

@@ -1,4 +1,4 @@
-<?php require_once('../Connections/wistream.php'); ?>
+<?php require_once('Connections/wistream.php'); ?>
 <?php
 //initialize the session
 if (!isset($_SESSION)) {
@@ -80,7 +80,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
     $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
   }
 
-  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+  $theValue = strip_tags($theValue);
 
   switch ($theType) {
     case "text":
@@ -112,17 +112,17 @@ if(isset($_FILES['upfile']['name']) && $_FILES['upfile']['name'] != "")
 $newname = uniqid(mt_rand(1,9999999999)) . ".jpg";
 }
 $replace = array(" ","@", ",", "?", "!", "+", "=", "#", "$", "&", "*", "(", ")", "/", "'", "~", "%", "[", "]", ":", ";", "<", ">", ".");
-$sqlcreate = sprintf("INSERT INTO content (title, content, dnt, category, photo, shorturl, uname) VALUES ('%s', '%s', '%s', '%s','%s', '%s','%s')",
+$sqlcreate = sprintf("INSERT INTO $database_wistream.content (title, content, dnt, category, photo, shorturl, uname) VALUES ('%s', '%s', '%s', '%s','%s', '%s','%s')",
 				ucwords(stripslashes(strip_tags($_POST['title']))),
-				mysql_real_escape_string(stripslashes($_POST['content'])),
-				mysql_real_escape_string($_POST['dnt']),
-				mysql_real_escape_string($_POST['category']),
-				mysql_real_escape_string($newname),
-				mysql_real_escape_string(str_replace($replace ,"-", strtolower($_POST['title']))),
-				mysql_real_escape_string($_POST['uname']));
+				strip_tags(stripslashes($_POST['content'])),
+				strip_tags($_POST['dnt']),
+				strip_tags($_POST['category']),
+				strip_tags($newname),
+				strip_tags(str_replace($replace ,"-", strtolower($_POST['title']))),
+				strip_tags($_POST['uname']));
 				
-	mysql_select_db($database_wistream);
-	$runadd = mysql_query($sqlcreate) or die("Unexpected Error: " . mysql_error());
+	//mysql_select_db();
+	$runadd = mysqli_query($wistream, $sqlcreate) or die("Unexpected Error: " . mysqli_error($wistream));
 // File  Upload
 if($_FILES['upfile']['name'] != "")
 {
@@ -138,7 +138,7 @@ header("Location: cats.php?c=$_POST[category]&status=newpost");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Wistream CMS</title>
+<title>Telemobi</title>
 <style type="text/css">
 body {
 	margin-top: 0px;
@@ -198,9 +198,8 @@ Enter Body</span></span></td>
             <td colspan="2" align="center"><table width="275" border="1" cellpadding="1" cellspacing="0">
               <tr>
                 <td width="269"><label for="upfile3"></label>
-                  Attach Image:
+                  Attach Video:
                   <input type="file" name="upfile" id="upfile4" /></td>
-                  
                 <?php if(isset($_GET['c']) && $_GET['c'] == "cars") { ?>
                 <?php } ?>
                 </tr>

@@ -1,5 +1,5 @@
 <?php /* Property of Wicee Technologies */ ?>
-<?php require_once('../Connections/wistream.php'); ?>
+<?php require_once('Connections/wistream.php'); ?>
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -8,7 +8,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
     $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
   }
 
-  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+  $theValue = function_exists("mysql_real_escape_string") ? strip_tags($theValue) : strip_tags($theValue);
 
   switch ($theType) {
     case "text":
@@ -112,13 +112,13 @@ if (isset($_POST['user'])) {
   $MM_redirectLoginSuccess = "cpanel.php";
   $MM_redirectLoginFailed = "?status=failed";
   $MM_redirecttoReferrer = false;
-  mysql_select_db($database_wistream, $wistream);
-  
-  $LoginRS__query=sprintf("SELECT uname, pwd FROM accts WHERE uname=%s AND pwd=%s",
+  mysqli_select_db($wistream, $database_wistream);
+  $LoginRS__query=sprintf("SELECT uname, pwd FROM wicoms.accts WHERE uname=%s AND pwd=%s",
     GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
-   
-  $LoginRS = mysql_query($LoginRS__query, $wistream) or die(mysql_error());
-  $loginFoundUser = mysql_num_rows($LoginRS);
+  //echo $LoginRS__query;
+  //die();
+  $LoginRS = mysqli_query($wistream, $LoginRS__query) or die(mysqli_error($wistream));
+  $loginFoundUser = mysqli_num_rows($LoginRS);
   if ($loginFoundUser) {
      $loginStrGroup = "";
     
@@ -145,7 +145,7 @@ if (isset($_POST['user'])) {
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title>Welcome to Wistream CMS</title>
+<title>Telemobi</title>
 
 </head>
 
@@ -159,7 +159,7 @@ if (isset($_POST['user'])) {
 
     <tr>
 
-      <td align="center" bgcolor="#FFFFFF"><img src="images/wicee.jpg" alt="" width="127" height="109" align="middle" /></td>
+      <td align="center" bgcolor="#000"><img src="images/logo.png" alt="" align="middle" /></td>
 
     </tr>
 
@@ -169,7 +169,7 @@ if (isset($_POST['user'])) {
 
     <tr>
 
-      <td align="center" bgcolor="#FFC68C"><h2>Welcome to Wistream Cpanel</h2></td>
+      <td align="center" bgcolor="#FFC68C"><h2>Welcome to Telemobi Content</h2></td>
 
     </tr>
 
@@ -229,7 +229,7 @@ if (isset($_POST['user'])) {
 
     <tr>
 
-      <td height="28" align="center" bgcolor="#FFD9B3">powered by <a href="http://www.facebook.com/wicee" target="_blank">Wicee</a></td>
+      <td height="28" align="center" bgcolor="#FFD9B3"></td>
 
     </tr>
 

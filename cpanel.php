@@ -1,4 +1,4 @@
-<?php require_once('../Connections/wistream.php'); ?>
+<?php require_once('Connections/wistream.php'); ?>
 <?php
 
 //initialize the session
@@ -143,14 +143,14 @@ if(isset($_POST['createpage']) && $_POST['createpage'] == "yes")
 	// New Page Creation
 	$replace = array(" ","@", ",", "?", "!", "+", "=", "#", "$", "&", "*", "(", ")", "/", "'", "~", "%", "[", "]", ":", ";", "<", ">", ".");
 	$pageurl = str_replace($replace ,"-", strtolower($_POST['pagename']));
-	mysql_select_db($database_wistream, $wistream);
-	$insqry = mysql_query("INSERT INTO pages (pagename, pageurl, pagetype) VALUES ('$_POST[pagename]', '$pageurl', '$_POST[type]')", $wistream) or die(mysql_error());
+	//mysql_select_db($database_wistream, $wistream);
+	$insqry = mysqli_query($wistream, "INSERT INTO $database_wistream.pages (pagename, pageurl, pagetype) VALUES ('$_POST[pagename]', '$pageurl', '$_POST[type]')") or die(mysql_error());
 }
 if(isset($_GET['act']) && $_GET['act'] == "del")
 {
 	// Delete Page
-	mysql_select_db($database_wistream, $wistream);
-	$delopt = mysql_query("DELETE FROM pages WHERE id='$_GET[id]'", $wistream);
+	//mysql_select_db($database_wistream, $wistream);
+	$delopt = mysqli_query($wistream,"DELETE FROM $database_wistream.pages WHERE id='$_GET[id]'");
 	header("Location: cpanel.php");
 }
 ?>
@@ -186,11 +186,11 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-mysql_select_db($database_wistream, $wistream);
-$query_rsPages = "SELECT * FROM pages";
-$rsPages = mysql_query($query_rsPages, $wistream) or die(mysql_error());
-$row_rsPages = mysql_fetch_assoc($rsPages);
-$totalRows_rsPages = mysql_num_rows($rsPages);
+mysqli_select_db($wistream, $database_wistream);
+$query_rsPages = "SELECT * FROM $database_wistream.pages";
+$rsPages = mysqli_query($wistream,$query_rsPages) or die(mysqli_error($wistream));
+$row_rsPages = mysqli_fetch_assoc($rsPages);
+$totalRows_rsPages = mysqli_num_rows($rsPages);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -200,7 +200,7 @@ $totalRows_rsPages = mysql_num_rows($rsPages);
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title>Wistream CMS</title>
+<title>Telemobi</title>
 
 <style type="text/css">
 
@@ -218,11 +218,11 @@ body {
 
 <body>
 
-<table width="98%" align="center" cellpadding="0" cellspacing="0">
+<table width="100%" align="center" cellpadding="0" cellspacing="0">
 
   <tr>
 
-    <td align="center" bgcolor="#FFFFFF"><img src="images/wicee.jpg" alt="" width="127" height="109" align="middle" /></td>
+    <td align="center" bgcolor="#000"><img src="images/logo.png" align="middle" /></td>
 
   </tr>
 
@@ -271,14 +271,12 @@ body {
         </tr>
       
     </table>
-    <?php } while ($row_rsPages = mysql_fetch_assoc($rsPages)); ?>
+    <?php } while ($row_rsPages = mysqli_fetch_assoc($rsPages)); ?>
   <?php } // Show if recordset not empty ?></td>
 
   </tr>
-
   <tr>
-
-    <td height="24" colspan="3" align="center" bgcolor="#FFD9B3">powered by <a href="http://www.facebook.com/wicee" target="_blank">Wicee</a></td>
+    <td height="24" colspan="3" align="center" bgcolor="#FFD9B3"></td>
 
   </tr>
 
@@ -288,5 +286,5 @@ body {
 
 </html>
 <?php
-mysql_free_result($rsPages);
+mysqli_free_result($rsPages);
 ?>
